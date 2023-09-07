@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+.headerCard {
+  @apply font-normal tracking-[0.02em] leading-none text-[32px];
+}
+
+.headerCard-mobile {
+  @apply font-normal tracking-[0.02em] leading-none text-[24px];
+}
+
+.headerTable {
+  @apply font-bold tracking-[0.02em] leading-none text-[18px];
+}
+
+.subCardText {
+  @apply font-bold tracking-[0.02em] leading-none text-[16px];
+}
+
+.bodyText {
+  @apply font-normal tracking-[0.02em] leading-none text-[12px];
+}
+
+.headerTitle {
+  @apply font-bold tracking-[0.02em] leading-none text-[2.2rem];
+}
+
+.stroke-custom{
+  path{
+      stroke-width: 12 !important;
+  }
+}
