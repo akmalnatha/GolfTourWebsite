@@ -55,3 +55,15 @@ body {
       stroke-width: 12 !important;
   }
 }
+
+@keyframes fades {
+  0%   {opacity:1;}
+
+  100% {opacity:0;}
+}
+
+.fade-row {
+  animation-name: fades;
+  animation-duration: 3s;
+  transition: ease-in;
+}

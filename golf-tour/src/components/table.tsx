@@ -1,3 +1,6 @@
+'use client';
+
+import { useState,useEffect, useRef } from "react";
 import { IoTriangleOutline } from "react-icons/io5";
 
 interface TableProps {
@@ -6,11 +9,30 @@ interface TableProps {
 }
 
 function Table({ header, data}: TableProps) {
-  const sortedData = [...data].sort(
-    (a, b) =>
-      a.skor.reduce((sum, score) => sum + score, 0) -
-      b.skor.reduce((sum, score) => sum + score, 0)
-  );
+  const [sortedData,SetSortedData] = useState(data.slice(0,3))
+
+  let slicing = useRef(0)
+useEffect(() => {
+  const intervalId = setInterval(() => {
+  const startIndex = (slicing.current) % data.length;
+    const endIndex = (startIndex + 4) % data.length; // startIndex + {max row shown-1} change based on preferences
+
+    if (startIndex <= endIndex) {
+      SetSortedData(data.slice(startIndex, endIndex + 1));
+    } else {
+      SetSortedData(data.slice(startIndex).concat(data.slice(0, endIndex + 1)));
+    }
+
+    slicing.current = (slicing.current + 1) % data.length;
+  }, 2000)
+  
+  return () => clearInterval(intervalId); //This is important
+ 
+},[data])
+
+
+  
+  
   return (
     <>
       <table className="min-w-full overflow-visible border-separate border-spacing-y-1">
@@ -63,30 +85,30 @@ function Table({ header, data}: TableProps) {
             sortedData.map((obj: any, idx: number) => {
               let total = 0;
               return (
-                <tr key={idx} className="h-fit">
+                <tr key={idx+slicing.current} className={`${idx == 0 ? "fade-row" : ""} h-fit`}>
                   <td
                     className={`${
-                      idx == 0
+                      obj.rank == 1
                         ? "bg-gradient-to-r from-gold-primary to-gold-secondary"
-                        : idx == 1
+                        : obj.rank == 2
                         ? "bg-gradient-to-r from-silver-primary to-silver-secondary"
-                        : idx == 2
+                        : obj.rank == 3
                         ? "bg-gradient-to-r from-copper-primary to-copper-secondary"
                         : "bg-white border-[1px] border-r-0 border-grey-primary border-l-grey-secondary"
                     } h-auto w-auto align-middle text-center headerTable p-2 text-black`}
                   >
-                    {idx + 1}
+                    {obj.rank}
                   </td>
                   <td
                     className={`${
-                      idx == 0
+                      obj.rank == 1
                         ? "bg-gradient-to-r from-gold-primary to-gold-secondary"
-                        : idx == 1
+                        : obj.rank == 2
                         ? "bg-gradient-to-r from-silver-primary to-silver-secondary"
-                        : idx == 2
+                        : obj.rank == 3
                         ? "bg-gradient-to-r from-copper-primary to-copper-secondary"
                         : "bg-white border-[1px] border-r-0 border-grey-primary border-l-grey-secondary"
-                    } h-auto w-auto align-middle bodyText p-2 text-black`}
+                    } h-auto w-auto align-middle bodyText p-2 text-black truncate`}
                   >
                     {obj.nama} [{obj.angkatan}]
                   </td>
