@@ -26,28 +26,38 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-.headerCard {
-  @apply font-normal tracking-[0.02em] leading-none text-[32px];
-}
+@responsive{
+  .headerCard {
+    @apply font-normal tracking-[0.02em] leading-none text-[32px];
+  }
+  
+  .headerCard-mobile {
+    @apply font-normal tracking-[0.02em] leading-none text-[22px];
+  }
+  
+  .headerTable {
+    @apply font-bold tracking-[0.02em] leading-none text-[18px];
+  }
+  
+  .headerTitle {
+    @apply font-bold tracking-[0.02em] leading-none text-[2.2rem];
+  }
+  
+  .subCardText {
+    @apply font-bold tracking-[0.02em] leading-none text-[16px];
+  }
+  
+  .bodyText {
+    @apply font-normal tracking-[0.02em] leading-none text-[14px];
+  }
+  
+  .scrollingText {
+    @apply font-semibold tracking-[0.02em] leading-none text-[24px];
+  }
 
-.headerCard-mobile {
-  @apply font-normal tracking-[0.02em] leading-none text-[24px];
-}
-
-.headerTable {
-  @apply font-bold tracking-[0.02em] leading-none text-[18px];
-}
-
-.subCardText {
-  @apply font-bold tracking-[0.02em] leading-none text-[16px];
-}
-
-.bodyText {
-  @apply font-normal tracking-[0.02em] leading-none text-[12px];
-}
-
-.headerTitle {
-  @apply font-bold tracking-[0.02em] leading-none text-[2.2rem];
+  .scrollingText-mobile {
+    @apply font-semibold tracking-[0.02em] leading-none text-[18px];
+  }
 }
 
 .stroke-custom{
@@ -58,6 +68,7 @@ body {
 
 @keyframes fades {
   0%   {opacity:1;}
+  15%  {opacity:1;} 
 
   100% {opacity:0;}
 }

@@ -25,11 +25,11 @@ function RankingCard({ data, angkatan, average, rank }: RankingCardProps) {
         <div className="bg-orange-primary flex-1 px-3 py-2 flex flex-col gap-7 justify-between ">
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <h1 className="headerCard">{rank}</h1>
+              <h1 className="headerCard-mobile xl:headerCard">{rank}</h1>
               <p className="bodyText">Rank</p>
             </div>
             <div className="flex flex-col">
-              <h1 className="headerCard text-right">Angkatan {angkatan}</h1>
+              <h1 className="headerCard-mobile xl:headerCard text-right">Angkatan {angkatan}</h1>
               <p className="bodyText text-right">Group</p>
             </div>
           </div>

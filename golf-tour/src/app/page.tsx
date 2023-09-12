@@ -5,6 +5,8 @@ import Table from '@/components/table'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Footer from '@/components/footer';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   type dataTable = {
@@ -13,6 +15,12 @@ export default function Home() {
     skor: number[];
     rank?: number
   }[];
+
+  type RankingData = {
+    angkatan: string;
+    averageScore: number;
+    filteredDataCard: dataTable; // Assuming dataTable is the correct type
+  };
 
   const data : dataTable =[
     {
@@ -69,6 +77,41 @@ export default function Home() {
       angkatan: "2010",
       skor: [
         5, 6, 0, 0, 4, 3, 6, 5, 0 
+      ],
+    },
+    {
+      nama: "Bayu",
+      angkatan: "2011",
+      skor: [
+        2, 4, 4, 5, 7, 5, 0, 0, 6 
+      ],
+    },
+    {
+      nama: "Mario",
+      angkatan: "2012",
+      skor: [
+        0, 0, 6, 5, 4, 3, 4, 6, 0 
+      ],
+    },
+    {
+      nama: "Alan",
+      angkatan: "2013",
+      skor: [
+        0, 0, 0, 6, 7, 7, 6, 8, 0 
+      ],
+    },
+    {
+      nama: "Daffa",
+      angkatan: "2014",
+      skor: [
+        4, 4, 3, 5, 4, 6, 6, 5, 4 
+      ],
+    },
+    {
+      nama: "Raffi",
+      angkatan: "2015",
+      skor: [
+        6, 5, 2, 0, 3, 4, 6, 5, 5 
       ],
     },
   ]
@@ -132,8 +175,9 @@ export default function Home() {
     )
   })
 
+  //CHUNK DATA FOR RANKING CARDS
   const group = Array.from(new Set(data.map((item) => item.angkatan))).sort();
-  const sortedRankingData = group.map((angkatan) => {
+  const sortedRankingData : RankingData[] = group.map((angkatan) => {
     const filteredDataCard = data.filter((item) => item.angkatan === angkatan);
     const totalScore = filteredDataCard.reduce(
       (accumulator, item) =>
@@ -147,23 +191,51 @@ export default function Home() {
   });
 
   sortedRankingData.sort((a, b) => a.averageScore - b.averageScore);
-  //lg:grid lg:grid-cols-2 lg:auto-rows-min lg:gap-2
+  function chunkArray(array: Object[], chunkSize: number) {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+  const chunkedRankingData = chunkArray(sortedRankingData, 8);
+
+  
   return (
-    <main className="flex flex-col lg:flex-row min-h-screen gap-2">
-      <div className="w-full lg:w-2/3 overflow-auto">
-        <Table header={header} data={sortedTableData}/>
+    <>
+    
+      <div className="flex flex-col lg:flex-row min-h-screen gap-1 p-3">
+        <div className="w-full lg:w-2/3 overflow-auto">
+          <div className='bg-orange-primary p-2'>
+            <h1 className='text-center headerTitle'>
+              JUDUL
+            </h1>
+          </div>
+          <Table header={header} data={sortedTableData}/>
+        </div>
+        <div className="w-full lg:w-1/3 ">
+          <Slider {...settings}>
+            {chunkedRankingData.map((obj, idx: number) => {
+              return(
+                <div className="w-full lg:px-1 pb-3" key={idx}>
+                  <div className='grid grid-cols-1 auto-rows-min lg:grid-cols-2 gap-2'>
+                    {obj.map((item, innerIdx: number) => {
+                      const typedItem = item as RankingData;
+                      return(
+                        <div key={innerIdx}>
+                          <RankingCard data={typedItem.filteredDataCard} angkatan={typedItem.angkatan} average={typedItem.averageScore} rank={(idx*8)+innerIdx+1}/>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })
+            }
+          </Slider>
+        </div>
       </div>
-      <div className="w-full lg:w-1/3 px-1">
-        <Slider {...settings}>
-        {sortedRankingData.map((item, idx: number) => {
-          return(
-            <div className="mt-1 px-1 " key={idx}>
-              <RankingCard data={item.filteredDataCard} angkatan={item.angkatan} average={item.averageScore} rank={idx+1}/>
-            </div>
-          )
-        })}
-        </Slider>
-      </div>
-    </main>
+      <Footer/>
+    </>
   )
 }
